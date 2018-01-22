@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/bitly/oauth2_proxy/cookie"
+	"github.com/rpardini/oauth2_proxy/cookie"
 )
 
 type Provider interface {
@@ -19,6 +19,8 @@ type Provider interface {
 
 func New(provider string, p *ProviderData) Provider {
 	switch provider {
+	case "mattermost":
+		return NewMattermostProvider(p)
 	case "linkedin":
 		return NewLinkedInProvider(p)
 	case "facebook":

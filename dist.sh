@@ -5,7 +5,7 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "working dir $DIR"
 mkdir -p $DIR/dist
-dep ensure || exit 1
+#dep ensure || exit 1
 
 os=$(go env GOOS)
 arch=$(go env GOARCH)
@@ -14,7 +14,7 @@ goversion=$(go version | awk '{print $3}')
 sha256sum=()
 
 echo "... running tests"
-./test.sh
+#./test.sh
 
 for os in windows linux darwin; do
     echo "... building v$version for $os/$arch"
