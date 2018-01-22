@@ -74,7 +74,30 @@ func (p *MattermostProvider) GetEmailAddress(s *SessionState) (string, error) {
 	}
 	return r.Email, nil
 }
+func (p *MattermostProvider) GetUserName(s *SessionState) (string, error) {
+	if s.AccessToken == "" {
+		return "", errors.New("missing access token")
+	}
+	req, err := http.NewRequest("GET", p.ProfileURL.String()+"", nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header = getMattermostHeader(s.AccessToken)
+
+	type result struct {
+		Username string
+	}
+	var r result
+	err = api.RequestJson(req, &r)
+	if err != nil {
+		return "", err
+	}
+	if r.Username == "" {
+		return "", errors.New("no username")
+	}
+	return r.Username, nil
+}
 
 func (p *MattermostProvider) ValidateSessionState(s *SessionState) bool {
-	return validateToken(p, s.AccessToken, getFacebookHeader(s.AccessToken))
+	return validateToken(p, s.AccessToken, getMattermostHeader(s.AccessToken))
 }
